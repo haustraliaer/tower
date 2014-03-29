@@ -1,21 +1,13 @@
 /** @jsx React.DOM */
 // yeeyeyey
 
-var React    = window.React = require('react'), // assign it to winow for react chrome extension
-
-    Header   = require('./header'),
-    Posts    = require('./posts'),
-
+var React    = window.React = require('react'), // assign it to window for react chrome extension
+    post_list    = require('./posts/list.js'),
     App;
 
 App = React.createClass({
     render: function () {
-        return <div>
-            <Header/>
-            <div className="container content">
-                <Posts/>
-            </div>
-        </div>;
+        return <post_list/>;
     }
 });
 
