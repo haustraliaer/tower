@@ -1,14 +1,15 @@
 
-var gutil       = require('gulp-util'),
-    sass        = require('gulp-sass'),
-    gulp        = require('gulp'),
-    browserify  = require('gulp-browserify'),
-    concat      = require('gulp-concat')
+var gutil           = require('gulp-util'),
+    sass            = require('gulp-sass'),
+    gulp            = require('gulp'),
+    browserify      = require('gulp-browserify'),
+    concat          = require('gulp-concat')
     embedlr         = require('gulp-embedlr'),
     refresh         = require('gulp-livereload'),
     lrserver        = require('tiny-lr')(),
     express         = require('express'),
     livereload      = require('connect-livereload'),
+    prefix          = require('gulp-autoprefixer'),
     livereloadport  = 35729,
     serverport      = 8080;
 
@@ -33,6 +34,7 @@ gulp.task('serve', function() {
 gulp.task('styles', function(){
   gulp.src('./app/sass/application.scss')
     .pipe(sass({sourceComments: 'map'}))
+    .pipe(prefix())
     .pipe(gulp.dest('./build/assets/css/'))
     .pipe(refresh(lrserver));
 });
