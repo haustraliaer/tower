@@ -1,27 +1,28 @@
 {
-  "name": "hn-react",
-  "version": "0.0.0",
+  "name": "tower",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "haustraliaer",
+  "license": "MIT",
   "devDependencies": {
     "gulp": "~3.6.0",
     "gulp-browserify": "~0.4.0",
     "reactify": "~0.5.1",
     "gulp-concat": "~2.1.7",
-    "gulp-imagemin": "~0.1.4",
     "jquery": "~2.1.0",
     "envify": "~1.2.0",
     "react": "~0.9.0",
     "gulp-sass": "~0.7.1",
-    "http": "0.0.0",
-    "path": "~0.4.9",
     "tiny-lr": "0.0.5",
     "ecstatic": "~0.4.13",
-    "gulp-util": "~2.2.14"
+    "gulp-util": "~2.2.14",
+    "connect-livereload": "~0.3.2",
+    "gulp-livereload": "~1.2.0",
+    "gulp-embedlr": "~0.5.2",
+    "express": "~3.4.8"
   }
 }

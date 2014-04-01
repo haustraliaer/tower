@@ -1,77 +1,79 @@
 
 var gutil       = require('gulp-util'),
     sass        = require('gulp-sass'),
-    lr          = require('tiny-lr'),
-    http        = require('http'),
-    path        = require('path'),
-    ecstatic    = require('ecstatic'),
     gulp        = require('gulp'),
     browserify  = require('gulp-browserify'),
-    concat      = require('gulp-concat'),
-    imagemin    = require('gulp-imagemin');
+    concat      = require('gulp-concat')
+    embedlr         = require('gulp-embedlr'),
+    refresh         = require('gulp-livereload'),
+    lrserver        = require('tiny-lr')(),
+    express         = require('express'),
+    livereload      = require('connect-livereload'),
+    livereloadport  = 35729,
+    serverport      = 8080;
 
 
-var tlr = lr();
-var __dirname = './build/';
-var livereload = function (evt, filepath) {
-  tlr.changed({
-  body: {
-    files: path.relative(__dirname, filepath)
-  }
-  });
-};
+// server --------------------------------- //
 
+var server = express();
 
-// gulp tasks
- 
-gulp.task('styles', function () {
-  return gulp.src('./app/sass/styles.scss')
-  .pipe(sass())
-  .pipe(gulp.dest('./build/assets/css/'));
+server.use(livereload({
+  port: livereloadport
+}));
+
+server.use(express.static('./build'));
+
+gulp.task('serve', function() {
+  server.listen(serverport);
+  lrserver.listen(livereloadport);
 });
 
-gulp.task('scripts', function () {
+// main tasks ------------------------------ //
+ 
+gulp.task('styles', function(){
+  gulp.src('./app/sass/styles.scss')
+    .pipe(sass({sourceComments: 'map'}))
+    .pipe(gulp.dest('./build/assets/css/'))
+    .pipe(refresh(lrserver));
+});
+
+gulp.task('scripts', function(){
   gulp.src(['./app/js/app.js'])
     .pipe(browserify({
       debug: true,
       transform: [ 'reactify' ]
     }))
-    .pipe(gulp.dest('./build/assets/js/'));
+    .pipe(gulp.dest('./build/assets/js/'))
+    .pipe(refresh(lrserver));
 });
 
-gulp.task('images', function () {
-  gulp.src(['./app/img/**/*.png', './app/img/**/*.gif'])
-    .pipe(gulp.dest('./build/assets/img/'));
+gulp.task('html', function(){
+  gulp.src('./app/index.html')
+    .pipe(gulp.dest('./build/'))
+    .pipe(refresh(lrserver));
 });
 
-gulp.task('html', function () {
-  gulp.src('./app/html/**/*')
-    .pipe(gulp.dest('./build/'));
+gulp.task('assets', function(){
+  gulp.src('./app/assets/**/*')
+    .pipe(gulp.dest('./build/assets/'))
+    .pipe(refresh(lrserver));
 });
 
-gulp.task('data', function () {
-  gulp.src('./app/data/**/*')
-    .pipe(gulp.dest('./build/'));
-});
-
-// default task
+// watch ---------------------------------- //
 
 gulp.task('watch', function() {
 
-
-  http.createServer(ecstatic({root: __dirname})).listen(8080);
-  gutil.log(gutil.colors.green('HTTP server listening on port 8080'));
-
-  tlr.listen(35729);
-  gutil.log(gutil.colors.green('Livereload server listening on port 35729'));
-
-  gulp.watch('app/sass/**', ['styles'])._watcher.on('all', livereload);
-  gulp.watch('app/js/**', ['scripts'])._watcher.on('all', livereload);
-  gulp.watch('app/img/**', ['images'])._watcher.on('all', livereload);
-  gulp.watch('app/html/**', ['html'])._watcher.on('all', livereload);
-  gulp.watch('app/data/**', ['data'])._watcher.on('all', livereload);
+  gulp.watch('app/sass/**', ['styles']);
+  gulp.watch('app/js/**', ['scripts']);
+  gulp.watch('app/assets/**', ['assets']);
+  gulp.watch('app/index.html', ['html']);
 
 });
 
-gulp.task('default', [ 'styles', 'scripts', 'images', 'html', 'data', 'watch' ]);
+// build ---------------------------------- //
 
+gulp.task('build', ['html', 'scripts', 'styles', 'assets']);
+
+// gulp ---------------------------------- //
+ 
+gulp.task('default', ['scripts', 'styles', 'html', 'assets', 'serve', 'watch']);
