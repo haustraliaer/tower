@@ -31,7 +31,7 @@ gulp.task('serve', function() {
 // main tasks ------------------------------ //
  
 gulp.task('styles', function(){
-  gulp.src('./app/sass/styles.scss')
+  gulp.src('./app/sass/application.scss')
     .pipe(sass({sourceComments: 'map'}))
     .pipe(gulp.dest('./build/assets/css/'))
     .pipe(refresh(lrserver));
