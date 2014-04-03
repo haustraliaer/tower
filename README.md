@@ -1,11 +1,20 @@
-# Hacker News Client built using ReactJS
+# Tower of Haustraliaer
 
-Messing with https://github.com/prabirshrestha/hn-react to learn how to reactify my browser into gulping the news.
+A simple tumblr API app porting my text posts into react views.
 
-## Running the sample
+- gulp task management
+- node-sass (.scss)
+- browserify module management
+- react.js
 
-```bash
-npm install -g gulp
-npm install
-gulp
-```
+## Simple Install Instructions
+
+$ **cd "project directory"**
+
+$ **npm install -g gulp** _// Install globals_
+
+$ **npm install** _// Grab node dependencies_
+
+$ **gulp** _// Build the project, watch and spin up a local server_
+
+$ **gulp build** _// Just build the project (eg, for deployment)_
