@@ -32,7 +32,7 @@ gulp.task('serve', function() {
 // main tasks ------------------------------ //
  
 gulp.task('styles', function(){
-  gulp.src('./app/sass/application.scss')
+  gulp.src('/app/sass/application.scss')
     .pipe(sass({sourceComments: 'map'}))
     .pipe(prefix())
     .pipe(gulp.dest('./build/assets/css/'))
@@ -40,24 +40,24 @@ gulp.task('styles', function(){
 });
 
 gulp.task('scripts', function(){
-  gulp.src(['./app/js/app.js'])
+  gulp.src(['/app/js/app.js'])
     .pipe(browserify({
       debug: true,
       transform: [ 'reactify' ]
     }))
-    .pipe(gulp.dest('./build/assets/js/'))
+    .pipe(gulp.dest('/build/assets/js/'))
     .pipe(refresh(lrserver));
 });
 
 gulp.task('html', function(){
-  gulp.src('./app/index.html')
-    .pipe(gulp.dest('./build/'))
+  gulp.src('/app/index.html')
+    .pipe(gulp.dest('/build/'))
     .pipe(refresh(lrserver));
 });
 
 gulp.task('assets', function(){
-  gulp.src('./app/assets/**/*')
-    .pipe(gulp.dest('./build/assets/'))
+  gulp.src('/app/assets/**/*')
+    .pipe(gulp.dest('/build/assets/'))
     .pipe(refresh(lrserver));
 });
 
