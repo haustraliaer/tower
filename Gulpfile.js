@@ -3,6 +3,7 @@ var gutil           = require('gulp-util'),
     sass            = require('gulp-sass'),
     gulp            = require('gulp'),
     browserify      = require('gulp-browserify'),
+    ractify         = require('ractify'),
     concat          = require('gulp-concat')
     embedlr         = require('gulp-embedlr'),
     refresh         = require('gulp-livereload'),
@@ -12,8 +13,7 @@ var gutil           = require('gulp-util'),
     prefix          = require('gulp-autoprefixer'),
     livereloadport  = 35729,
     serverport      = 8080;
-
-
+    
 // server --------------------------------- //
 
 var server = express();
@@ -32,32 +32,31 @@ gulp.task('serve', function() {
 // main tasks ------------------------------ //
  
 gulp.task('styles', function(){
-  gulp.src('/app/sass/application.scss')
-    .pipe(sass({sourceComments: 'map'}))
+  gulp.src('./app/sass/application.scss')
+    .pipe(sass()) // {sourceComments: 'map'} doesn't work in windows :/
     .pipe(prefix())
     .pipe(gulp.dest('./build/assets/css/'))
     .pipe(refresh(lrserver));
 });
 
+
+
 gulp.task('scripts', function(){
-  gulp.src(['/app/js/app.js'])
-    .pipe(browserify({
-      debug: true,
-      transform: [ 'reactify' ]
-    }))
-    .pipe(gulp.dest('/build/assets/js/'))
+  gulp.src(['./app/js/app.js'])
+    .pipe(browserify({ debug: true }))
+    .pipe(gulp.dest('./build/assets/js/'))
     .pipe(refresh(lrserver));
 });
 
 gulp.task('html', function(){
-  gulp.src('/app/index.html')
-    .pipe(gulp.dest('/build/'))
+  gulp.src('./app/index.html')
+    .pipe(gulp.dest('./build/'))
     .pipe(refresh(lrserver));
 });
 
 gulp.task('assets', function(){
-  gulp.src('/app/assets/**/*')
-    .pipe(gulp.dest('/build/assets/'))
+  gulp.src('./app/assets/**/*')
+    .pipe(gulp.dest('./build/assets/'))
     .pipe(refresh(lrserver));
 });
 
