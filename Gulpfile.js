@@ -13,7 +13,7 @@ var gutil           = require('gulp-util'),
     prefix          = require('gulp-autoprefixer'),
     livereloadport  = 35729,
     serverport      = 8080;
-    
+
 // server --------------------------------- //
 
 var server = express();
@@ -42,8 +42,12 @@ gulp.task('styles', function(){
 
 
 gulp.task('scripts', function(){
-  gulp.src(['./app/js/app.js'])
-    .pipe(browserify({ debug: true }))
+  gulp.src('./app/js/app.js', { read: false })
+    .pipe(browserify({ 
+      debug: true,
+      transform: ['ractify'],
+      extensions: ['.ract']
+    }))
     .pipe(gulp.dest('./build/assets/js/'))
     .pipe(refresh(lrserver));
 });
