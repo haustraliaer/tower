@@ -7,8 +7,8 @@ module.exports = function(el){
     el: el,
     template: require('./list.ract'),
     data: { 
-      greeting: 'Hello', 
-      recipient: 'world' 
+      greeting: 'yep', 
+      recipient: '...sweet' 
     }
   });
 

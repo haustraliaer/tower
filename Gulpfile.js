@@ -50,6 +50,8 @@ gulp.task('scripts', function(){
     }))
     .pipe(gulp.dest('./build/assets/js/'))
     .pipe(refresh(lrserver));
+
+  // browserify -t ractify app/js/app.js > build/assets/js/app.js
 });
 
 gulp.task('html', function(){
