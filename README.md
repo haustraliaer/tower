@@ -5,7 +5,7 @@ A simple tumblr API app porting my text posts into Ractive views.
 - gulp task management
 - node-sass (.scss)
 - browserify module management
-- _Ractive_.js
+- Ractive.js
 
 ## Simple Install Instructions
 
