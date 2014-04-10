@@ -1,0 +1,8 @@
+
+<div class="list" intro="fader">
+  {{#posts}}
+    <div>
+      {{body}}
+    </div>
+  {{/posts }}
+</div>

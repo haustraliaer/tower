@@ -32,17 +32,15 @@ gulp.task('serve', function() {
 // main tasks ------------------------------ //
  
 gulp.task('styles', function(){
-  gulp.src('./app/sass/application.scss')
+  gulp.src('./app/application.scss')
     .pipe(sass()) // {sourceComments: 'map'} doesn't work in windows :/
     .pipe(prefix())
     .pipe(gulp.dest('./build/assets/css/'))
     .pipe(refresh(lrserver));
 });
 
-
-
 gulp.task('scripts', function(){
-  gulp.src('./app/js/app.js', { read: false })
+  gulp.src('./app/application.js', { read: false })
     .pipe(browserify({ 
       debug: true,
       transform: ['ractify'],
@@ -70,9 +68,9 @@ gulp.task('assets', function(){
 
 gulp.task('watch', function() {
 
-  gulp.watch('app/sass/**', ['styles']);
-  gulp.watch('app/js/**', ['scripts']);
-  gulp.watch('app/assets/**', ['assets']);
+  gulp.watch('app/**/*.scss', ['styles']);
+  gulp.watch(['app/**/*.js', 'app/**/*.ract'], ['scripts']);
+  gulp.watch('app/assets/**/*', ['assets']);
   gulp.watch('app/index.html', ['html']);
 
 });
