@@ -1,7 +1,7 @@
 
-<div class="list" intro="fader">
+<div>
   {{#posts}}
-    <div>
+    <div class="list" intro="fader">
       {{body}}
     </div>
   {{/posts }}
