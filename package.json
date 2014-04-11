@@ -9,6 +9,7 @@
   "author": "haustraliaer",
   "license": "MIT",
   "devDependencies": {
+    "component-ajax": "0.0.2",
     "connect-livereload": "~0.3.2",
     "ecstatic": "~0.4.13",
     "envify": "~1.2.0",

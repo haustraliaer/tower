@@ -1,5 +1,5 @@
 
-var $ = require('jquery');
+var ajax = require('component-ajax');
 var Ractive = require('ractify');
 var sampleData = require('./list-data');
 var fadeTransition = require('../../utilities/transitions/fader');
@@ -27,38 +27,16 @@ module.exports = function(el){
     }
   });
 
-
-  $.ajax({
+  ajax({
     dataType:  'jsonp',
     data:      { format: 'jsonp' },
     url:       'http://api.tumblr.com/v2/blog/haustraliaer.tumblr.com/posts/text?api_key=CC7nUBprgWxMr9hA85r5uqmXikN9GcSwlrygvmFKVGdFjE7cPy&filter=text',
 
     success: function (result) {
 
-      var local_posts = ractive.get('posts'),
-          local_length = local_posts.length,
-          remote_posts = result.response.posts.reverse(),
-          temp_posts = local_posts;
-
-      $(remote_posts).each(function(index) {
-
-        if((index + 1) > local_length) {
-          var object = {
-            id: this.id,
-            body: this.body
-          };
-
-          local_posts.push(object);
-
-          console.log('pushed new object');
-        }
-      });
-
-      ractive.set('posts', local_posts);
-      localStorage.setItem('haustraliaer_towerPosts', JSON.stringify(local_posts));
-
-      // todo... remove deleted posts by diffing the ajax result with local data
-      
+      var remote_posts = result.response.posts.reverse();
+      ractive.set('posts', remote_posts);
+      localStorage.setItem('haustraliaer_towerPosts', JSON.stringify(remote_posts));
     },
 
     error: function () {
