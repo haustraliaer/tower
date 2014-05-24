@@ -23,7 +23,13 @@
     "gulp-sass": "~0.7.1",
     "gulp-util": "~2.2.14",
     "jquery": "~2.1.0",
-    "ractify": "0.2.0",
+    "ractify": "0.4.0",
+    "ractive": "~0.4.0",
     "tiny-lr": "0.0.5"
+  },
+  "dependencies": {
+    "arrival": "^1.0.0",
+    "grunt": "^0.4.5",
+    "grunt-grunticon": "^1.2.5"
   }
 }

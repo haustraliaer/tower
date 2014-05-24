@@ -1,7 +1,8 @@
 
-var list = require('./widgets/list/list');
+// var list = require('./widgets/list/list');
+var tower = require('./widgets/tower');
 
-list(document.getElementById("app"));
+tower(document.getElementById("tower"));
 
 
 

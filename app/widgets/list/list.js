@@ -1,6 +1,6 @@
 
 var ajax = require('component-ajax');
-var Ractive = require('ractify');
+var Ractive = require('ractive/build/ractive.runtime');
 var sampleData = require('./list-data');
 var fadeTransition = require('../../utilities/transitions/fader');
 Ractive.transitions.fader = fadeTransition;

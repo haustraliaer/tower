@@ -1,0 +1,4 @@
+
+  <div class="tower__top i-top" intro="topIn" outro="topOut"></div>
+  <div class="tower__trapdoor i-trapdoor" intro="trapdoorIn" outro="trapdoorOut"></div>
+  <div class="tower__bottom i-bottom" intro="bottomIn" outro="bottomOut"></div>
