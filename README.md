@@ -1,11 +1,11 @@
 # Tower of Haustraliaer
 
-A simple tumblr API app porting my text posts into react views.
+A simple tumblr API app porting my text posts into Ractive views.
 
 - gulp task management
 - node-sass (.scss)
 - browserify module management
-- react.js
+- Ractive.js
 
 ## Simple Install Instructions
 
@@ -18,8 +18,3 @@ $ **npm install** _// Grab node dependencies_
 $ **gulp** _// Build the project, watch and spin up a local server_
 
 $ **gulp build** _// Just build the project (eg, for deployment)_
-
-
-----
-
-_testing feature/branch pull requests..._
