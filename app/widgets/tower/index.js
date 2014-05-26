@@ -1,13 +1,15 @@
 
+var ajax = require('component-ajax');
 var Ractive = require('ractive/build/ractive.runtime');
-var animations = require('./animations');
+var initDoors = require('../doors');
+var emitter = require('../../utilities/tower-events');
 
-Ractive.transitions.topIn = animations.topIn;
-Ractive.transitions.topOut = animations.topOut;
-Ractive.transitions.bottomIn = animations.bottomIn;
-Ractive.transitions.bottomOut = animations.bottomOut;
-Ractive.transitions.trapdoorIn = animations.trapdoorIn;
-Ractive.transitions.trapdoorOut = animations.trapdoorOut;
+var _array = [],
+    cached_data = localStorage.getItem('haustraliaer_towerPosts');
+
+if(cached_data) {
+  _array = JSON.parse(cached_data);
+}
 
 module.exports = function(el){
   
@@ -15,15 +17,40 @@ module.exports = function(el){
     el: el,
     template: require('./index.ract').template,
     data: {
-      transitions: {
-        topIn: animations.topIn,
-        topOut: animations.topOut,
-        bottomIn: animations.bottomIn,
-        bottomOut: animations.bottomOut,
-        trapdoorIn: animations.trapdoorIn,
-        trapdoorOut: animations.trapdoorOut
-      }
+      posts: _array,
     }
+  });
+
+
+  initDoors(ractive.nodes.doors)
+
+  ajax({
+    dataType:  'jsonp',
+    data:      { format: 'jsonp' },
+    url:       'http://api.tumblr.com/v2/blog/haustraliaer.tumblr.com/posts/text?api_key=CC7nUBprgWxMr9hA85r5uqmXikN9GcSwlrygvmFKVGdFjE7cPy&filter=text',
+
+    success: function (result) {
+
+      var remote_posts = result.response.posts.reverse();
+      ractive.set('posts', remote_posts);
+      localStorage.setItem('haustraliaer_towerPosts', JSON.stringify(remote_posts));
+      emitter.emit('doors-loaded', ractive.get('posts'))
+    },
+
+    error: function () {
+      console.log("nope - couldn't connect");
+    }
+  });
+
+  emitter.on('doors-loaded', function(){
+    var el = ractive.el;
+    var distance = ractive.el.offsetHeight - 200;
+    var string = 'translateY(' + distance + 'px)';
+    el.style.webkitTransform = string;
+    el.style.MozTransform = string;
+    el.style.msTransform = string;
+    el.style.OTransform = string;
+    el.style.transform = string;
   });
 
   return ractive;

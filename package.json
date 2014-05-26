@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "arrival": "^1.0.0",
+    "events": "^1.0.1",
     "grunt": "^0.4.5",
     "grunt-grunticon": "^1.2.5"
   }

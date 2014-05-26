@@ -1,52 +1,15 @@
 
 #tower {
   position: relative;
-  height: 500px;
-  overflow: hidden;
-
-  @include breakpoint(portrait) {
-    height: 800px;   
-  }
+  padding-bottom: 200px;
+  transition: transform 0.5s ease;
 }
 
-.tower__top {
+.entry__door {
   position: absolute;
-  left: 50%;
-  bottom: 50px;
-  margin-left: -175px;
-  @include icon(350px, 394px, block);    
-
-  @include breakpoint(portrait) {
-    bottom: 100px;
-    margin-left: -252px;
-    @include icon(504px, 567px, block);    
-  }
-}
-
-.tower__bottom {  
-  position: absolute;
-  left: 50%;
-  bottom: -100px;
-  margin-left: -180px;
-  @include icon(360px, 419px, block);
-
-  @include breakpoint(portrait) {
-    bottom: -200px;
-    margin-left: -300px;
-    @include icon(600px, 699px, block);
-  }
-}
-
-.tower__trapdoor {
-  position: absolute;
-  left: 50%;
-  @include icon(50px, 18px, block);
-  bottom: 310px;
-  margin-left: -25px;
-
-  @include breakpoint(portrait) {
-    @include icon(84px, 31px, block);
-    bottom: 480px;
-    margin-left: -42px;
-  }
+  top: 200px;
+  left: 50px;
+  width: 20px;
+  height: 30px;
+  background-color: white;
 }
