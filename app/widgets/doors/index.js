@@ -6,10 +6,14 @@ var emitter = require('../../utilities/tower-events');
 // Ractive.transitions.fader = fadeTransition;
 
 module.exports = function(el){
-  
+
   var ractive = new Ractive({
     el: el,
-    template: require('./index.ract').template
+    template: require('./index.ract').template,
+    data: {
+      // qrtusv123456!@#$%^()
+      fleuron: 'v'
+    }
   });
 
   emitter.on('doors-loaded', function(posts){

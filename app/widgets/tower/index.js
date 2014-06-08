@@ -12,7 +12,7 @@ if(cached_data) {
 }
 
 module.exports = function(el){
-  
+
   var ractive = new Ractive({
     el: el,
     template: require('./index.ract').template,
@@ -40,17 +40,6 @@ module.exports = function(el){
     error: function () {
       console.log("nope - couldn't connect");
     }
-  });
-
-  emitter.on('doors-loaded', function(){
-    var el = ractive.el;
-    var distance = ractive.el.offsetHeight - 200;
-    var string = 'translateY(' + distance + 'px)';
-    el.style.webkitTransform = string;
-    el.style.MozTransform = string;
-    el.style.msTransform = string;
-    el.style.OTransform = string;
-    el.style.transform = string;
   });
 
   return ractive;
