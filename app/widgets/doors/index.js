@@ -1,6 +1,5 @@
 
 var Ractive = require('ractive/build/ractive.runtime');
-var sampleData = require('./dummy-data');
 var emitter = require('../../utilities/tower-events');
 // var fadeTransition = require('../../utilities/transitions/fader');
 // Ractive.transitions.fader = fadeTransition;

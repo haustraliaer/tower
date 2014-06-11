@@ -3,6 +3,7 @@ var ajax = require('component-ajax');
 var Ractive = require('ractive/build/ractive.runtime');
 var initDoors = require('../doors');
 var emitter = require('../../utilities/tower-events');
+var Velocity = require('../../utilities/velocity');
 
 var _array = [],
     cached_data = localStorage.getItem('haustraliaer_towerPosts');
@@ -21,8 +22,16 @@ module.exports = function(el){
     }
   });
 
-
   initDoors(ractive.nodes.doors)
+
+  emitter.emit('doors-loaded', ractive.get('posts'))
+
+  var door1 = ractive.nodes['door1']
+  var door2 = ractive.nodes['door2']
+
+  ractive.on('animate', function(){
+    Velocity.animate(door1, {scale: 2.0}, 300, 'spring', undefined);
+  })
 
   ajax({
     dataType:  'jsonp',
@@ -38,7 +47,7 @@ module.exports = function(el){
     },
 
     error: function () {
-      console.log("nope - couldn't connect");
+      console.log('no connection, using local data');
     }
   });
 
