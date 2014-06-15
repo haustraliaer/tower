@@ -1,9 +1,9 @@
 
 var ajax = require('component-ajax');
 var Ractive = require('ractive/build/ractive.runtime');
-var initDoors = require('../doors');
+var initRooms = require('../rooms');
 var emitter = require('../../utilities/tower-events');
-var Velocity = require('../../utilities/velocity');
+var Velocity = require('velocity-animate');
 
 var _array = [],
     cached_data = localStorage.getItem('haustraliaer_towerPosts');
@@ -22,16 +22,67 @@ module.exports = function(el){
     }
   });
 
-  initDoors(ractive.nodes.doors)
+  initRooms(ractive.nodes.rooms)
 
-  emitter.emit('doors-loaded', ractive.get('posts'))
+  emitter.emit('posts-loaded', ractive.get('posts'))
 
-  var door1 = ractive.nodes['door1']
-  var door2 = ractive.nodes['door2']
+  var elems = [
+    {
+      el: ractive.nodes['tower_icon1'],
+      duration: 700
+    },
+    {
+      el: ractive.nodes['tower_icon2'],
+      duration: 900
+    },
+    {
+      el: ractive.nodes['tower_img'],
+      duration: 800
+    },
+    {
+      el: ractive.nodes['tower_text'],
+      duration: 800,
+      delay: 400,
+      complete: transitionIntoTower
+    }
+  ]
 
   ractive.on('animate', function(){
-    Velocity.animate(door1, {scale: 2.0}, 300, 'spring', undefined);
+    elems.forEach(function(elem){
+
+      var options = {
+        duration: elem.duration,
+        easing: 'ease'
+      }
+
+      if(elem.delay !== undefined) {
+        options.delay = elem.delay
+      }
+
+      if(elem.complete !== undefined) {
+        options.complete = elem.complete
+      }
+
+      var props = {
+        translateY: '-100%',
+        opacity: 0
+      }
+
+      Velocity.animate(elem.el, props, options)
+
+    })
   })
+// 94 91 90
+  function transitionIntoTower() {
+    var el = document.getElementsByTagName("html")[0];
+    var props = {
+      backgroundColorRed: '94',
+      backgroundColorGreen: '94',
+      backgroundColorBlue: '94'
+    }
+
+    Velocity.animate(el, props, 300)
+  }
 
   ajax({
     dataType:  'jsonp',
@@ -43,7 +94,7 @@ module.exports = function(el){
       var remote_posts = result.response.posts.reverse();
       ractive.set('posts', remote_posts);
       localStorage.setItem('haustraliaer_towerPosts', JSON.stringify(remote_posts));
-      emitter.emit('doors-loaded', ractive.get('posts'))
+      emitter.emit('posts-loaded', ractive.get('posts'))
     },
 
     error: function () {

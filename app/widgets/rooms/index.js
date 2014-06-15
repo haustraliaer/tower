@@ -1,8 +1,6 @@
 
 var Ractive = require('ractive/build/ractive.runtime');
 var emitter = require('../../utilities/tower-events');
-// var fadeTransition = require('../../utilities/transitions/fader');
-// Ractive.transitions.fader = fadeTransition;
 
 module.exports = function(el){
 
@@ -15,7 +13,7 @@ module.exports = function(el){
     }
   });
 
-  emitter.on('doors-loaded', function(posts){
+  emitter.on('posts-loaded', function(posts){
     ractive.set('posts', posts);
   });
 

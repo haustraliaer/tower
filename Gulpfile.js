@@ -30,10 +30,10 @@ gulp.task('serve', function() {
 });
 
 // main tasks ------------------------------ //
- 
+
 gulp.task('styles', function(){
   gulp.src('./app/application.scss')
-    .pipe(sass({sourceComments: 'map'})) //  doesn't work in windows :/
+    .pipe(sass()) //  doesn't work in windows :/
     .pipe(prefix())
     .pipe(gulp.dest('./build/assets/css/'))
     .pipe(refresh(lrserver));
@@ -41,7 +41,7 @@ gulp.task('styles', function(){
 
 gulp.task('scripts', function(){
   gulp.src('./app/application.js', { read: false })
-    .pipe(browserify({ 
+    .pipe(browserify({
       debug: true,
       transform: ['ractify'],
       extensions: ['.ract']
@@ -80,5 +80,5 @@ gulp.task('watch', function() {
 gulp.task('build', ['html', 'scripts', 'styles', 'assets']);
 
 // gulp ---------------------------------- //
- 
+
 gulp.task('default', ['scripts', 'styles', 'html', 'assets', 'serve', 'watch']);

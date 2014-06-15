@@ -1,15 +1,15 @@
 <div class="entrance">
-  <div class="entrace__img">
+  <div id="tower_img" class="entrace__img">
     <img src="assets/img/tower.png">
   </div>
   <div class="entrance__icons">
-    <span id="door1" class="i-right-door _icon"></span>
-    <span id="door2" class="i-right-door--open _icon"></span>
+    <span id="tower_icon1" class="i-right-door _icon"></span>
+    <span id="tower_icon2" class="i-right-door--open _icon"></span>
   </div>
 </div>
-<div class="entrace__text">
-  <p>— You stumble upon an old abandoned tower, a strange collection of thoughts has amassed here over time...</p>
-<button onclick="animate">clicky</button>
+<div id="tower_text" class="entrace__text">
+  <p><span class="fleuron">2</span> You stumble upon an old abandoned tower, a strange collection of thoughts has amassed here over time...</p>
+<button on-click="animate">clicky</button>
 </div>
 
-<div id="doors"></div>
+<div id="rooms"></div>
