@@ -1,13 +1,13 @@
 {
-  "name": "shiny_ditto",
+  "name": "tower",
   "version": "0.0.1",
-  "description": "A boilerplate for single page apps",
+  "description": "You stumble upon an old abandoned tower, a strange collection of thoughts has amassed here over time...",
   "main": "index.js",
   "scripts": {
     "build": "aperture link && gulp build",
     "dev": "aperture link && gulp"
   },
-  "author": "idealogue",
+  "author": "haustraliaer",
   "license": "MIT",
   "dependencies": {
     "aperture": "1.0.0",
