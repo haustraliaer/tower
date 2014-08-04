@@ -1,25 +1,35 @@
-# Tower of Haustraliaer
+# Shiny Ditto
 
-A simple tumblr API app porting my text posts into react views.
+#### Like [Ditto](https://github.com/idealogue/ditto), but rarer. A single page app boilerplate running on Node.js.
+> Ditto (Japanese: メタモン *Metamon*) is a Normal-type Pokémon that uses the move `Transform` to copy the opponent's moves, types, form, and non-HP stats.
 
-- gulp task management
-- node-sass (.scss)
-- browserify module management
-- react.js
+![](http://cl.ly/image/2e1f2H0Q130G/shiny_ditto.gif)
 
-## Simple Install Instructions
+## Features
 
-$ **cd "project directory"**
+- Gulp.js
+  * gulp-sass (.scss)
+  * Auto-prefixer
+  * Express server with LiveReload
+- Browserify module management
 
-$ **npm install -g gulp** _// Install globals_
+## Getting started
+- Make sure you have gulp installed: `npm install -g gulp`
+- After cloning the repository, `cd` into the folder and grab the node dependencies: `npm install`
+- Do an initial build, watch for file changes and spin up a local server: `gulp`
+- Ready to deploy? Build the project: `gulp build`
 
-$ **npm install** _// Grab node dependencies_
+## To do
 
-$ **gulp** _// Build the project, watch and spin up a local server_
+Make some projects using this to figure out what should go in the boilerplate eg:
+- basic routing
+- responsive methods
+- event guidelines
+- etc...
 
-$ **gulp build** _// Just build the project (eg, for deployment)_
+## Authors
+**David Hauser**
+- [GitHub](http://github.com/haustraliaer)
 
-
-----
-
-_testing feature/branch pull requests..._
+**Ben Jennings**
+- [GitHub](http://github.com/jenbennings)
