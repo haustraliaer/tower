@@ -5,14 +5,25 @@
 'use strict';
 
 var React = require('react')
+var Velocity = require('velocity-animate')
+var appEl = document.getElementById('app')
+
+var divStyle = {
+  cursor: 'pointer',
+  padding: '30px'
+}
 
 var App = React.createClass({
+  animateMe: function() {
+    var el = this.refs.myDiv.getDOMNode()
+    Velocity.animate(el, {opacity: [0.3, 1]})
+  },
   render: function() {
-    return <div>Dot, {this.props.name}!</div>
+    return <div
+      style={divStyle}
+      onClick={this.animateMe}
+      ref="myDiv">Dot, {this.props.name}!</div>
   }
 })
 
-React.renderComponent(
-  <App name="ditto" />,
-  document.getElementById('app')
-)
+React.renderComponent(<App name="ditto" />, appEl)
