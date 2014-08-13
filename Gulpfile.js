@@ -42,7 +42,6 @@ gulp.task('styles', function(){
 gulp.task('scripts', function(){
   gulp.src(['./app/application.js'])
     .pipe(browserify({
-      debug: true,
       transform: [ 'reactify' ]
     }))
     .pipe(gulp.dest('./build/assets/js/'))

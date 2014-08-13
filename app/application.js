@@ -5,7 +5,7 @@
 'use strict';
 
 var React = require('react')
-var Velocity = require('velocity-animate')
+var Velocity = require('app-velocity')
 var appEl = document.getElementById('app')
 
 var divStyle = {
