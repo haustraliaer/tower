@@ -1,4 +1,4 @@
-var shim = window.Velocity = require('./shim.js');
+var shim = require('./shim.js');
 
 /***************
     Details
@@ -6,19 +6,18 @@ var shim = window.Velocity = require('./shim.js');
 
 /*!
 * Velocity.js: Accelerated JavaScript animation.
-* @version 0.11.2
+* @version 0.11.4
 * @docs http://VelocityJS.org
 * @license Copyright 2014 Julian Shapiro. MIT License: http://en.wikipedia.org/wiki/MIT_License
 */
 
 /****************
-    Overview
+    Structure
 ****************/
 
 /*
-Velocity's structure:
-- CSS Stack: Works independently from the rest of Velocity.
-- Velocity.animate(): Core method that iterates over the targeted elements and queues the incoming call onto each element individually. Consists of:
+- CSS: CSS stack that works independently from the rest of Velocity.
+- animate(): Core animation method that iterates over the targeted elements and queues the incoming call onto each element individually.
   - Pre-Queueing: Prepare the element for animation by instantiating its data cache and processing the call's options.
   - Queueing: The logic that runs once the call has reached its point of execution in the element's $.queue() stack.
               Most logic is placed here to avoid risking it becoming stale (if the element's properties have changed).
@@ -32,16 +31,16 @@ Velocity's structure:
 ******************/
 
 ;(function (factory) {
-    /* AMD module. */
-    if (typeof define === "function" && define.amd) {
-        if (window.Velocity) {
-            define(factory);
-        } else {
-            define(["jquery"], factory)
-        }
     /* CommonJS module. */
-    } else if (typeof module === "object" && typeof module.exports === "object") {
+    if (typeof module === "object" && typeof module.exports === "object") {
         module.exports = factory(window.Velocity);
+    /* AMD module. */
+    } else if (typeof define === "function" && define.amd) {
+        if (window.Velocity) {
+            define("velocity", factory);
+        } else {
+            define("velocity", [ "jquery" ], factory)
+        }
     /* Browser globals. */
     } else {
         factory(window.jQuery);
@@ -169,12 +168,13 @@ return function (global, window, document, undefined) {
 
     /* Local to our Velocity scope, assign $ to jQuery or the jQuery shim. (The shim is a port of the jQuery utility functions that Velocity uses.) */
     var $;
+
     /* The argument passed in by the module loader can either be jQuery (if it was required) or a helper function provided by the module loader
        (in the case that Velocity's jQuery shim is being used). We check for jQuery by sniffing its unique .fn property. */
-
     if (jQuery && jQuery.fn !== undefined) {
         $ = jQuery;
     } else if (window.Velocity && window.Velocity.Utilities) {
+
         $ = window.Velocity.Utilities;
     }
 
@@ -290,7 +290,7 @@ return function (global, window, document, undefined) {
             });
         },
         /* Velocity's core animation method, later aliased to $.fn if a framework (jQuery or Zepto) is detected. */
-        animate: function () { /* Defined below. */ },
+        animate: null, /* Defined below. */
         /* A reimplementation of jQuery's $.css(), used for getting/setting Velocity's hooked CSS properties. */
         hook: function (elements, arg2, arg3) {
             var value = undefined;
@@ -329,7 +329,7 @@ return function (global, window, document, undefined) {
         },
         /* Set to true to force a duration of 1ms for all animations so that UI testing can be performed without waiting on animations to complete. */
         mock: false,
-        version: { major: 0, minor: 11, patch: 2 },
+        version: { major: 0, minor: 11, patch: 4 },
         /* Set to 1 or 2 (most verbose) to output debug info to console. */
         debug: false
     };
@@ -1557,11 +1557,11 @@ return function (global, window, document, undefined) {
     CSS.Hooks.register();
     CSS.Normalizations.register();
 
-    /**********************
-       Velocity.animate
-    **********************/
+    /*****************
+        Animation
+    *****************/
 
-    Velocity.animate = function() {
+    var animate = function() {
 
         /******************
             Call Chain
@@ -1589,7 +1589,7 @@ return function (global, window, document, undefined) {
         var syntacticSugar = (arguments[0] && (($.isPlainObject(arguments[0].properties) && !arguments[0].properties.names) || Type.isString(arguments[0].properties))),
             /* Whether Velocity was called via the utility function (as opposed to on a jQuery/Zepto object). */
             isUtility,
-            /* When Velocity is called via the utility function ($.Velocity.animate()/Velocity.animate()), elements are explicitly
+            /* When Velocity is called via the utility function ($.Velocity()/Velocity()), elements are explicitly
                passed in as the first parameter. Thus, argument positioning varies. We normalize them here. */
             elementsWrapped,
             argumentIndex;
@@ -2808,7 +2808,7 @@ return function (global, window, document, undefined) {
                     reverseOptions.complete = opts.complete;
                 }
 
-                Velocity.animate(elements, "reverse", reverseOptions);
+                Velocity(elements, "reverse", reverseOptions);
             }
         }
 
@@ -2819,6 +2819,11 @@ return function (global, window, document, undefined) {
         /* Return the elements back to the call chain, with wrapped elements taking precedence in case Velocity was called via the $.fn. extension. */
         return getChain();
     };
+
+    /* Turn Velocity into the animation function, extended with the pre-existing Velocity object. */
+    Velocity = $.extend(animate, Velocity);
+    /* For legacy support, also expose the literal animate method. */
+    Velocity.animate = animate;
 
     /**************
         Timing
@@ -3064,8 +3069,7 @@ return function (global, window, document, undefined) {
 
         /* Note: completeCall() sets the isTicking flag to false when the last call on Velocity.State.calls has completed. */
         if (Velocity.State.isTicking) {
-            /* If mock is on (http://VelocityJS.org/#mock), use synchronous code (with mock's forced duration of 0) to immediately toggle end values. */
-            Velocity.mock ? tick(true) : ticker(tick);
+            ticker(tick);
         }
     }
 
@@ -3096,7 +3100,7 @@ return function (global, window, document, undefined) {
             var element = call[i].element;
 
             /* If the user set display to "none" (intending to hide the element), set it now that the animation has completed. */
-            /* Note: display:none isn't set when calls are manually stopped (via Velocity.animate("stop"). */
+            /* Note: display:none isn't set when calls are manually stopped (via Velocity("stop"). */
             /* Note: Display gets ignored with "reverse" calls and infinite loops, since this behavior would be undesirable. */
             if (!isStopped && !opts.loop) {
                 if (opts.display === "none") {
@@ -3153,7 +3157,7 @@ return function (global, window, document, undefined) {
             *********************/
 
             /* Complete is fired once per call (not once per element) and is passed the full raw DOM element set as both its context and its first argument. */
-            /* Note: Callbacks aren't fired when calls are manually stopped (via Velocity.animate("stop"). */
+            /* Note: Callbacks aren't fired when calls are manually stopped (via Velocity("stop"). */
             if (!isStopped && opts.complete && !opts.loop && (i === callLength - 1)) {
                 /* We throw callbacks in a setTimeout so that thrown errors don't halt the execution of Velocity itself. */
                 try {
@@ -3179,7 +3183,7 @@ return function (global, window, document, undefined) {
             ****************************/
 
             if (opts.loop === true && !isStopped) {
-                Velocity.animate(element, "reverse", { loop: true, delay: opts.delay });
+                Velocity(element, "reverse", { loop: true, delay: opts.delay });
             }
 
             /***************
@@ -3230,7 +3234,7 @@ return function (global, window, document, undefined) {
        If either framework is loaded, register a "velocity" extension pointing to Velocity's core animate() method. */
     var framework;
 
-    if (jQuery && jQuery.fn) {
+    if (jQuery && jQuery.fn !== undefined) {
         framework = jQuery;
     } else if (window.Zepto) {
         framework = window.Zepto;
@@ -3243,7 +3247,7 @@ return function (global, window, document, undefined) {
 
     if (framework) {
         /* Assign the element function to Velocity's core animate() method. */
-        framework.fn.velocity = Velocity.animate;
+        framework.fn.velocity = animate;
         /* Assign the object function's defaults to Velocity's global defaults object. */
         framework.fn.velocity.defaults = Velocity.defaults;
     }
@@ -3381,7 +3385,7 @@ return function (global, window, document, undefined) {
             };
 
             /* Animation triggering. */
-            Velocity.animate(element, originalValues, opts);
+            Velocity(element, originalValues, opts);
         };
     });
 
@@ -3415,7 +3419,7 @@ return function (global, window, document, undefined) {
                 opts.display = opts.display || ((direction === "In") ? "auto" : "none");
             }
 
-            Velocity.animate(this, propertiesMap, opts);
+            Velocity(this, propertiesMap, opts);
         };
     });
 
