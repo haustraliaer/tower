@@ -30,7 +30,8 @@
   "aperture": {
     "sources": [
       "app/lib/*",
-      "app/modules/*"
+      "app/modules/*",
+      "app/rooms/*"
     ]
   }
 }

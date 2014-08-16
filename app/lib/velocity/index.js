@@ -1,4 +1,4 @@
-var shim = require('./shim.js');
+var shim = require('./shim.js')
 
 /***************
     Details
