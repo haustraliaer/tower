@@ -6,7 +6,11 @@ var React = require('react')
 
 var room_components = [
   require('tower-room-0'),
-  require('tower-room-1')
+  require('tower-room-1'),
+  require('tower-room-2'),
+  require('tower-room-3'),
+  require('tower-room-4'),
+  require('tower-room-5')
 ]
 
 var Rooms = [];
