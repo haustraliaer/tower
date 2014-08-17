@@ -42,7 +42,13 @@ gulp.task('styles', function(){
 gulp.task('scripts', function(){
   gulp.src(['./app/application.js'])
     .pipe(browserify({
-      transform: [ 'reactify' ]
+      transform: [ 'reactify' ],
+      shim: {
+        jquery: {
+          path: './app/lib/velocity/shim.js',
+          exports: 'jquery'
+        }
+      }
     }))
     .pipe(gulp.dest('./build/assets/js/'))
     .pipe(refresh(lrserver));
