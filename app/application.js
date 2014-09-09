@@ -5,7 +5,7 @@
 'use strict';
 
 var React = window.React = require('react')
-var getTumblrPosts = require('network-updatePosts')
+var getTumblrPosts = require('util-updatePosts')()
 
 var room_components = [
   require('tower-room-0'),
