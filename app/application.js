@@ -5,14 +5,10 @@
 'use strict';
 
 var React = window.React = require('react')
-var emitter = require('util-emitter')
 var _array = require('util-checkLocalStorage')
 
-var getTumblrPosts = require('util-updatePosts')()
-
-emitter.on('tumblr-updated', function(data) {
-  // TODO: pipe this into react app state...
-  _array = data;
+var getTumblrPosts = require('util-updatePosts')(function(newPosts) {
+  _array = newPosts;
 })
 
 var room_components = [
@@ -26,10 +22,7 @@ var room_components = [
 
 var Rooms = [];
 room_components.forEach(function(component, index) {
-  // TODO: handle rooms vs tumblr array
-  // I think that the tumblr array needs to be boss
-  var text = _array[index].body
-  Rooms.push(<component key={index} text={text} />)
+  Rooms.push(<component key={index} />)
 })
 
 var Tower = React.createClass({

@@ -1,9 +1,8 @@
 'use strict';
 
 var ajax = require('component-ajax')
-var emitter = require('util-emitter')
 
-module.exports = function() {
+module.exports = function(callback) {
   ajax({
     dataType:  'jsonp',
     data:      { format: 'jsonp' },
@@ -11,8 +10,8 @@ module.exports = function() {
 
     success: function (result) {
       var remote_posts = result.response.posts.reverse();
-      emitter.emit('tumblr-updated', remote_posts)
       localStorage.setItem('haus_tumblrPosts', JSON.stringify(remote_posts));
+      callback(remote_posts)
     },
 
     error: function () {
