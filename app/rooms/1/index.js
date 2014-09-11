@@ -9,7 +9,7 @@ var React = require('react')
 var Room = React.createClass({
   render: function() {
     return (
-      <div>room {this.props.key}</div>
+      <div>test room one</div>
     )
   },
 })

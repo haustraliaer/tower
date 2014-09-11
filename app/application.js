@@ -27,7 +27,7 @@ var Tower = React.createClass({
     getTumblrPosts(function(newPosts) {
       var temp_array = []
       newPosts.forEach(function(post, index) {
-        temp_array.push(<Room key={index} text={post.body}/>)
+        temp_array.push(<Room key={index} text={post.body} />)
       })
       this.setState({
         rooms: temp_array
