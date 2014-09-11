@@ -5,30 +5,39 @@
 'use strict';
 
 var React = window.React = require('react')
+var Room = require('component-room')
+var getTumblrPosts = require('util-updatePosts')
 var _array = require('util-checkLocalStorage')
 
-var getTumblrPosts = require('util-updatePosts')(function(newPosts) {
-  _array = newPosts;
-})
+var initialRooms = [];
 
-var room_components = [
-  require('tower-room-0'),
-  require('tower-room-1'),
-  require('tower-room-2'),
-  require('tower-room-3'),
-  require('tower-room-4'),
-  require('tower-room-5')
-]
-
-var Rooms = [];
-room_components.forEach(function(component, index) {
-  Rooms.push(<component key={index} />)
+_array.forEach(function(post, index) {
+  initialRooms.push(<Room key={index} text={post.body}/>)
 })
 
 var Tower = React.createClass({
+
+  getInitialState: function() {
+    return {
+      rooms: initialRooms
+    }
+  },
+
+  componentDidMount: function() {
+    getTumblrPosts(function(newPosts) {
+      var temp_array = []
+      newPosts.forEach(function(post, index) {
+        temp_array.push(<Room key={index} text={post.body}/>)
+      })
+      this.setState({
+        rooms: temp_array
+      })
+    }.bind(this))
+  },
+
   render: function() {
     return (
-      <div>{Rooms}</div>
+      <div>{this.state.rooms}</div>
     )
   },
 })
