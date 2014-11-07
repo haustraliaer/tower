@@ -10,9 +10,9 @@ var roomManifest = require('util-roomManifest')
 
 var Room = React.createClass({
   render: function() {
-    var roomExtended = roomManifest[this.props.key + ''];
-    if(roomExtended !== undefined) {
-      return (<roomExtended key={this.props.key} text={this.props.text} />)
+    var RoomExtended = roomManifest[this.props.key + ''];
+    if(RoomExtended !== undefined) {
+      return (<RoomExtended key={this.props.key} text={this.props.text} />)
     }
     return (
       <div>
